@@ -1,0 +1,13 @@
+palabras/target
+palabras/data
+palabras/**/*.rs.bk
+palabras/Cargo.lock
+palabras/**/tests/
+palabras/docs/
+palabras/.git
+palabras/.github
+palabras/.gitignore
+palabras/README.md
+palabras/LICENSE
+palabras/translations_config.json
+palabras/vocab_config.json

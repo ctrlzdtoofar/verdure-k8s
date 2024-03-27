@@ -1,0 +1,8 @@
+/.idea/
+/docker/postgres/.env
+/docker/palabras/.env
+/docker/palabras/palabras/
+/docker/translator/.env
+/docker/translator/translator/
+/docker/nginx/proj/
+/docker/nginx/html/

@@ -1,1 +1,1 @@
-#Kubernetes Config for Palabras Project
+# k8s-palabras
