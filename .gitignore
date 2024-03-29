@@ -6,3 +6,6 @@
 /docker/translator/translator/
 /docker/nginx/proj/
 /docker/nginx/html/
+/docker/yew-study/yew-study/
+/k8s/dev/no_share.sh
+/k8s/dev/logs/

@@ -11,7 +11,7 @@ COPY palabras ./
 # Build your application for release
 RUN cargo build --release
 
-# Use a minimal base image
+# TODO: Find a smaller distro and add required libs, etc
 FROM ubuntu:latest
 WORKDIR /root/
 

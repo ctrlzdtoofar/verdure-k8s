@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ys-deployment
+spec:
+  replicas: 2
+  minReadySeconds: 20
+  selector:
+    matchLabels:
+      component: yew-study
+  template:
+    metadata:
+      labels:
+        component: yew-study
+    spec:
+      containers:
+        - name: client
+          image: heatherss92065/yew-study-nginx-image
+          ports:
+            - containerPort: 80
+      imagePullSecrets:
+        - name: paldockerhubsecret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ys-cluster-ip
+spec:
+  type: ClusterIP
+  selector:
+    component: yew-study
+  ports:
+    - port: 3031
+      targetPort: 80

@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: translator-deployment
+spec:
+  replicas: 2
+  minReadySeconds: 20
+  selector:
+    matchLabels:
+      component: translator-be
+  template:
+    metadata:
+      labels:
+        component: translator-be
+    spec:
+      containers:
+        - name: server
+          image: heatherss92065/palabras-translator-image
+          ports:
+            - containerPort: 8090
+          env:
+            - name: DB_LINK
+              valueFrom:
+                secretKeyRef:
+                  name: dblink
+                  key: DBLINK
+            - name: REGION
+              valueFrom:
+                secretKeyRef:
+                  name: region
+                  key: REGION
+          volumeMounts:
+            - name: aws-credentials-volume
+              mountPath: "/root/.aws"
+              readOnly: true
+      volumes:
+        - name: aws-credentials-volume
+          secret:
+            secretName: aws-credentials
+      imagePullSecrets:
+        - name: paldockerhubsecret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: translator-be-cluster-ip
+spec:
+  type: ClusterIP
+  selector:
+    component: translator-be
+  ports:
+    - port: 8090
+      targetPort: 8090

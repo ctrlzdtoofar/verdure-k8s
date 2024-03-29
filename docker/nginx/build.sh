@@ -3,4 +3,4 @@
 mkdir -p html
 cp -R ./proj/* html/.
 
-docker build -t palabras-nginx-image .
+docker build -t heatherss92065/palabras-nginx-image .

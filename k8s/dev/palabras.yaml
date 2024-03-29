@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: palabras-be-deployment
+spec:
+  replicas: 2
+  minReadySeconds: 20
+  selector:
+    matchLabels:
+      component: palabras-be
+  template:
+    metadata:
+      labels:
+        component: palabras-be
+    spec:
+      containers:
+        - name: server
+          image: heatherss92065/palabras-be-image
+          ports:
+            - containerPort: 3030
+          env:
+            - name: PAL_SERVER_ADDR
+              value: "0.0.0.0:3030"
+            - name: PAL_DB_LINK
+              valueFrom:
+                secretKeyRef:
+                  name: dblink
+                  key: DBLINK
+            - name: PAL_REGION
+              valueFrom:
+                secretKeyRef:
+                  name: region
+                  key: REGION
+          volumeMounts:
+            - name: aws-credentials-volume
+              mountPath: "/root/.aws"
+              readOnly: true
+      volumes:
+        - name: aws-credentials-volume
+          secret:
+            secretName: aws-credentials
+      imagePullSecrets:
+        - name: paldockerhubsecret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: palabras-be-cluster-ip
+spec:
+  type: ClusterIP
+  selector:
+    component: palabras-be
+  ports:
+    - port: 3030
+      targetPort: 3030
