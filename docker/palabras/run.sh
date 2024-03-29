@@ -5,4 +5,4 @@ docker run --name palabras-be \
   --network palabras-network \
   -v ~/.aws:/root/.aws \
   -e PAL_DB_LINK -e PAL_REGION -e PAL_SERVER_ADDR \
-  palabras-be-image
+  heatherss92065/palabras-be-image

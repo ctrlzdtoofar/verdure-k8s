@@ -5,4 +5,4 @@ docker run --name palabras-translator \
   --network palabras-network \
   -v ~/.aws:/root/.aws \
   -e DB_LINK -e REGION \
-  palabras-translator-image
+  heatherss92065/palabras-translator-image

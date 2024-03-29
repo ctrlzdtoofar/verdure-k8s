@@ -5,4 +5,4 @@ git fetch origin
 git pull origin main
 cd ..
 
-docker build -t palabras-be-image .
+docker build -t heatherss92065/palabras-be-image .

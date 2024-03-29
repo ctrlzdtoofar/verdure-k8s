@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-init-script
+data:
+  init-db.sql: |
+    CREATE SCHEMA palabras;
+    CREATE TYPE palabras.status_type AS ENUM ('pending', 'in_progress', 'completed');
+    ALTER DATABASE postgres SET search_path TO palabras;
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db-init-job
+spec:
+  template:
+    spec:
+      volumes:
+        - name: script-volume
+          configMap:
+            name: db-init-script
+      containers:
+        - name: db-init
+          image: postgres:latest
+          command: ["psql"]
+          args: ["-h", "postgres-cluster-ip-service", "-U", "postgres", "-d", "postgres", "-f", "/scripts/init-db.sql"]
+          volumeMounts:
+            - name: script-volume
+              mountPath: /scripts
+          env:
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pgpassword
+                  key: PGPASSWORD
+      restartPolicy: Never
+  backoffLimit: 4
