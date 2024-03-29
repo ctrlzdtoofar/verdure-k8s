@@ -6,4 +6,4 @@ git pull origin main
 trunk build --release
 cd ..
 
-docker build -t heatherss92065/yew-study-nginx-image .
+docker build -t heatherss92065/yew-study-nginx-image:v1.1 .

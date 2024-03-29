@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-service
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ys-cluster-ip
+                port:
+                  number: 3031
+          - path: /gql
+            pathType: Prefix
+            backend:
+              service:
+                name: palabras-be-cluster-ip
+                port:
+                  number: 3030
+          - path: /admin
+            pathType: Prefix
+            backend:
+              service:
+                name: translator-be-cluster-ip
+                port:
+                  number: 8090

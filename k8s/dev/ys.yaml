@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: client
-          image: heatherss92065/yew-study-nginx-image
+          image: heatherss92065/yew-study-nginx-image:v1.1
           ports:
             - containerPort: 80
       imagePullSecrets:

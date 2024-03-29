@@ -8,3 +8,5 @@ kubectl apply -f postgres-init-job.yaml
 kubectl apply -f palabras.yaml
 kubectl apply -f translator.yaml
 
+kubectl apply -f ingress.yaml
+
