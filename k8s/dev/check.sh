@@ -13,6 +13,8 @@ kubectl get secrets
 kubectl get storageclass
 kubectl describe storageclass
 kubectl get jobs
+kubectl get ingress
+
 
 # View logs
 kubectl logs job/db-init-job
