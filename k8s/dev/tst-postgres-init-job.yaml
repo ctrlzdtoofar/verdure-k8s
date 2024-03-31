@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tst-db-init-script
+data:
+  tst-init-db.sql: |
+    CREATE SCHEMA palabras;
+    CREATE TYPE palabras.status_type AS ENUM ('pending', 'in_progress', 'completed');
+    ALTER DATABASE postgres SET search_path TO palabras;
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: tst-db-init-job
+spec:
+  template:
+    spec:
+      volumes:
+        - name: script-volume
+          configMap:
+            name: tst-db-init-script
+      containers:
+        - name: tst-db-init
+          image: postgres:latest
+          command: ["psql"]
+          args: ["-h", "tst-postgres-cluster-ip-service", "-p", "5433", "-U", "postgres", "-d", "postgres", "-f", "/scripts/tst-init-db.sql"]
+          volumeMounts:
+            - name: script-volume
+              mountPath: /scripts
+          env:
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: tstpgpassword
+                  key: TSTPGPASSWORD
+      restartPolicy: Never
+  backoffLimit: 4
