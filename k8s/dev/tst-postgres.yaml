@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tst-postgres-deployment
+spec:
+  replicas: 1
+  minReadySeconds: 20
+  selector:
+    matchLabels:
+      component: tst-postgres
+  template:
+    metadata:
+      labels:
+        component: tst-postgres
+    spec:
+      volumes:
+        - name: tst-postgres-storage
+          persistentVolumeClaim:
+            claimName: tst-postgres-pvc
+      containers:
+        - name: tst-postgres
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: tstpgpassword
+                  key: TSTPGPASSWORD
+          image: postgres
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - mountPath: /var/lib/postgres/test
+              name: tst-postgres-storage
+              subPath: postgres
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tst-postgres-cluster-ip-service
+spec:
+  type: ClusterIP
+  selector:
+    component: tst-postgres
+  ports:
+    - port: 5433
+      targetPort: 5432

@@ -20,10 +20,8 @@ kubectl get ingress
 kubectl logs job/db-init-job
 kubectl logs translator-deployment-5f547fb789-6zp68 --previous
 
-# For local access to the db
-kubectl port-forward svc/my-database-service 5432:5432
-# - for troubleshooting --
 nohup kubectl port-forward service/postgres-cluster-ip-service 5432:5432 > port-forward.log 2>&1 &
+nohup kubectl port-forward service/tst-postgres-cluster-ip-service 5433:5433 > port-forward.log 2>&1 &
 
 # to turn off port forwarding:
 ps -ef | grep kubectl
@@ -37,11 +35,15 @@ kubectl rollout restart deployment translator-deployment
 # kubectl config delete-context minikube
 kubectl delete deployment ys-deployment
 kubectl delete deployment postgres-deployment
+
+kubectl delete deployment tst-postgres-deployment
+kubectl delete service tst-postgres-cluster-ip-service
+kubectl delete job tst-db-init-job
+
 kubectl delete deployment palabras-be-deployment
 kubectl delete deployment translator-deployment
 kubectl delete pod ys-pod
 kubectl delete pvc database-persistent-volume-claim
-kubectl delete job db-init-job
 
 kubectl service ys-test
 
