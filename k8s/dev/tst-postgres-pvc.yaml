@@ -1,3 +1,11 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: tst-hostpath-retained-sc
+provisioner: docker.io/hostpath
+reclaimPolicy: Retain
+volumeBindingMode: Immediate
+---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -8,3 +16,4 @@ spec:
   resources:
     requests:
       storage: 1Gi
+  storageClassName: tst-hostpath-retained-sc

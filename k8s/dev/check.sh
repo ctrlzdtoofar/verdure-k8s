@@ -15,17 +15,19 @@ kubectl describe storageclass
 kubectl get jobs
 kubectl get ingress
 
-
 # View logs
 kubectl logs job/db-init-job
 kubectl logs translator-deployment-5f547fb789-6zp68 --previous
 
+pkill -f "kubectl port-forward"
 nohup kubectl port-forward service/postgres-cluster-ip-service 5432:5432 > port-forward.log 2>&1 &
 nohup kubectl port-forward service/tst-postgres-cluster-ip-service 5433:5433 > tst-port-forward.log 2>&1 &
 
+exit 0 # don't continue by accident, it gets destructive
+
 # to turn off port forwarding:
-ps -ef | grep kubectl
-# kill -9 <pid>
+ps -ef | grep "kubectl port-forward"
+pkill -f "kubectl port-forward"
 
 # Rolling restarts
 kubectl rollout restart deployment palabras-be-deployment
@@ -34,6 +36,7 @@ kubectl rollout restart deployment translator-deployment
 # delete
 # kubectl config delete-context minikube
 kubectl delete deployment ys-deployment
+kubectl delete job db-init-job
 kubectl delete deployment postgres-deployment
 
 kubectl delete deployment tst-postgres-deployment
@@ -43,7 +46,7 @@ kubectl delete job tst-db-init-job
 kubectl delete deployment palabras-be-deployment
 kubectl delete deployment translator-deployment
 kubectl delete pod ys-pod
-kubectl delete pvc database-persistent-volume-claim
+kubectl delete pvc postgres-pvc
 
 kubectl service ys-test
 
