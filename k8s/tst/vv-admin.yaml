@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vv-admin-deployment
+spec:
+  replicas: 2
+  minReadySeconds: 20
+  selector:
+    matchLabels:
+      component: vv-admin-be
+  template:
+    metadata:
+      labels:
+        component: vv-admin-be
+    spec:
+      containers:
+        - name: server
+          image: heatherss92065/palabras-translator-image:v1.1
+          ports:
+            - containerPort: 8090
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: tstpgurl
+                  key: DBURL
+      imagePullSecrets:
+        - name: paldockerhubsecret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vv-admin-be-cluster-ip
+spec:
+  type: ClusterIP
+  selector:
+    component: vv-admin-be
+  ports:
+    - port: 8090
+      targetPort: 8090

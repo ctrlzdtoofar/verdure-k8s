@@ -7,7 +7,9 @@
 /docker/nginx/proj/
 /docker/nginx/html/
 /docker/yew-study/yew-study/
-/k8s/dev/no_share.sh
-/k8s/dev/logs/
-/k8s/dev/port-forward.log
-/k8s/dev/tst-port-forward.log
+/k8s/tst/no_share.sh
+/k8s/tst/logs/
+/k8s/tst/port-forward.log
+/k8s/tst/tst-port-forward.log
+/k8s/tst/init-test-secrets.sh
+/k8s/tst/.env-test
